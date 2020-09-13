@@ -1,0 +1,37 @@
+/* make the customizations */
+$theme-colors: (
+    "info": tomato,
+    "danger": teal
+);
+
+/* import bootstrap to set changes */
+@import "~bootstrap/scss/bootstrap";
+
+body {
+    font-family: 'Nunito';
+}
+
+#items-management {
+    margin-top: 50px;
+
+    .item-add-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 40%;
+        margin-bottom: 50px;
+
+        input {
+            flex: .7;
+        }
+        button {
+            flex: .2;
+        }
+    }
+
+    .items-content {
+        .select-groups {
+            align-items: center;
+        }
+    }
+}
