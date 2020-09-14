@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import axios from "axios";
 
 const ItemsContent = ({children, successResponse}) => {
@@ -7,6 +7,8 @@ const ItemsContent = ({children, successResponse}) => {
 
     const [leftSelectedOption, setLOption] = useState(null);
     const [rightSelectedOption, setROption] = useState(null);
+
+    const formRef = useRef(null);
 
     const updateItems = async () => {
         const {data} = await axios.get(`${api_url}/items-management`);
@@ -46,13 +48,31 @@ const ItemsContent = ({children, successResponse}) => {
         updateItems();
     }, [successResponse]);
 
+    const onLOptionChange = e => {
+        if (e.target.selectedOptions.length > 1) {
+            formRef.current.reset();
+            setLOption(null);
+        } else {
+            setLOption(e.target.value);
+        }
+    }
+
+    const onROptionChange = e => {
+        if (e.target.selectedOptions.length > 1) {
+            formRef.current.reset();
+            setROption(null);
+        } else {
+            setROption(e.target.value);
+        }
+    }
+
     return (
         <div className="items-content">
             {children}
 
-            <div className="row select-groups">
+            <form ref={formRef} onSubmit={e => e.preventDefault()} className="row select-groups">
                 <div className="col-md-5">
-                    <select multiple className="form-control" size="10" onChange={e => setLOption(e.target.value)}>
+                    <select multiple className="form-control" size="10" onChange={e => onLOptionChange(e)}>
                         {leftItems.map(value => {
                             return <option key={value} value={value}>{value}</option>;
                         })}
@@ -67,13 +87,13 @@ const ItemsContent = ({children, successResponse}) => {
                     </button>
                 </div>
                 <div className="col-md-5">
-                    <select multiple className="form-control" size="10" onChange={e => setROption(e.target.value)}>
+                    <select multiple className="form-control" size="10" onChange={e => onROptionChange(e) }>
                         {rightItems.map(value => {
                             return <option key={value} value={value}>{value}</option>;
                         })}
                     </select>
                 </div>
-            </div>
+            </form>
         </div>
     );
 };

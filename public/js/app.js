@@ -49567,6 +49567,8 @@ var ItemsContent = function ItemsContent(_ref) {
       rightSelectedOption = _useState8[0],
       setROption = _useState8[1];
 
+  var formRef = Object(react__WEBPACK_IMPORTED_MODULE_1__["useRef"])(null);
+
   var updateItems = /*#__PURE__*/function () {
     var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
       var _yield$axios$get, data, lItems, rItems;
@@ -49654,9 +49656,32 @@ var ItemsContent = function ItemsContent(_ref) {
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
     updateItems();
   }, [successResponse]);
+
+  var onLOptionChange = function onLOptionChange(e) {
+    if (e.target.selectedOptions.length > 1) {
+      formRef.current.reset();
+      setLOption(null);
+    } else {
+      setLOption(e.target.value);
+    }
+  };
+
+  var onROptionChange = function onROptionChange(e) {
+    if (e.target.selectedOptions.length > 1) {
+      formRef.current.reset();
+      setROption(null);
+    } else {
+      setROption(e.target.value);
+    }
+  };
+
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "items-content"
-  }, children, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+  }, children, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", {
+    ref: formRef,
+    onSubmit: function onSubmit(e) {
+      return e.preventDefault();
+    },
     className: "row select-groups"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "col-md-5"
@@ -49665,7 +49690,7 @@ var ItemsContent = function ItemsContent(_ref) {
     className: "form-control",
     size: "10",
     onChange: function onChange(e) {
-      return setLOption(e.target.value);
+      return onLOptionChange(e);
     }
   }, leftItems.map(function (value) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
@@ -49695,7 +49720,7 @@ var ItemsContent = function ItemsContent(_ref) {
     className: "form-control",
     size: "10",
     onChange: function onChange(e) {
-      return setROption(e.target.value);
+      return onROptionChange(e);
     }
   }, rightItems.map(function (value) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
